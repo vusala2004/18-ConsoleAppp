@@ -27,7 +27,7 @@ namespace Academy_Presentation.Controllers
                 return;
             }
 
-            Group group = new Group { Name = groupName,Teacher = groupTeacher, Room = groupRoom };
+            Group group = new Group { Name = groupName, Teacher = groupTeacher, Room = groupRoom };
 
             var groupResult = _groupService.Create(group);
 
@@ -40,10 +40,11 @@ namespace Academy_Presentation.Controllers
                 Helper.PrintConsole(ConsoleColor.Red, "Error: Could not add group");
             }
         }
-        public void Update() { }
     }
 }
-        //public void Update() { }
+    //    public void Update() { }
+    //}
+//        //public void Update() { }
 
          //public void Delete()
          //  {
