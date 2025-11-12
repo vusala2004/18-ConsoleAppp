@@ -47,7 +47,11 @@ namespace Service.Services.Implementations
             studentRepository.Delete(student);
         }
 
-       
+        public List<Student> GetAllByGroupId(int groupId)
+        {
+            return studentRepository.GetAllByGroupId(groupId);
+        }
+
         public List<Student> GetByAge(int age)
         {
             var students = studentRepository.GetAll(s => s.Age == age);
@@ -85,15 +89,11 @@ namespace Service.Services.Implementations
             return GetById(studentid);
         }
 
-       public List<Student> GetAllByGroupId(int groupId)
-       {
+      
+        
 
-
-            var filtered = studentRepository.datas.Where(s => s.GroupId == groupId).ToList();
-
-            return filtered;
-        }
-
+       
+        
     }
 }
     

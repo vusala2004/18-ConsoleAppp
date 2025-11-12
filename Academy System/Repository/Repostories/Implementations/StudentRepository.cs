@@ -43,7 +43,10 @@ namespace Repository.Repostories.Implementations
             return predicate != null ? AppDpContext<Student>.datas.FindAll(predicate) : AppDpContext<Student>.datas;
 
         }
-
+        public List<Student> GetAllByGroupId(int groupId)
+        {
+            return AppDpContext<Student>.datas .Where(s => s.Id == groupId).ToList();
+        }
         public void Update(Student data)
         {
             Student dpStudent = Get(s => s.Id == data.Id);

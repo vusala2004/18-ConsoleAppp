@@ -76,14 +76,12 @@ namespace Service.Services.Implementations
             return group;
         }
 
-        Group IGroupService.GetByRoom(string groupRoom)
+        public Group GetByRoom(string groupRoom)
         {
             Group group = groupRepository.Get(g => g.Room == groupRoom);
             if (group is null) return null;
             return group;
         }
-
-       
 
         
     }

@@ -45,13 +45,13 @@ namespace Academy_Presentation.Controllers
         public void UpdateGroup()
         {
         GroupId:
-            Helper.PrintConsole(ConsoleColor.Blue, "Add Group Id (or press Enter to cancel):");
+            Helper.PrintConsole(ConsoleColor.Blue, "Yenilemek istediyin qrupun ID-sini daxil et (ve ya Enter basaraq legv et):");
 
             string groupId = Console.ReadLine();
 
             if (string.IsNullOrWhiteSpace(groupId))
             {
-                Helper.PrintConsole(ConsoleColor.Red, "Update operation cancelled.");
+                Helper.PrintConsole(ConsoleColor.Red, "Yenileme emeliyyatı legv edildi.");
                 return;
             }
 
@@ -184,79 +184,44 @@ namespace Academy_Presentation.Controllers
 
         }
         public void GetByTeacher()
-
-      
-
         {
-        TeacherName:
-            Helper.PrintConsole(ConsoleColor.Green, "Add Group Teacher:");
-            string groupTeacher = Console.ReadLine().Trim().ToUpper();
+            Helper.PrintConsole(ConsoleColor.Blue, "Enter teacher name:");
+            string teacherName = Console.ReadLine();
 
-            bool isGroupTeacher = !string.IsNullOrWhiteSpace(groupTeacher);
+            var groups = _groupService.GetByTeacher(teacherName);
 
-            if (isGroupTeacher)
+            if (groups!=null)
             {
-                List<Group> groups = (List<Group>)_groupService.GetByTeacher(groupTeacher);
-
-                if (groupTeacher != null)
-                {
-                    Helper.PrintConsole(ConsoleColor.Yellow, $"Groups found for teacher: {groupTeacher}\n");
-
-
-                    {
-                        foreach (var group in groups)
-                            Helper.PrintConsole(ConsoleColor.Cyan, $"Id: {group.Id},GroupName:{group.Name},GroupTeacher:{group.Teacher},GroupRoom{group.Room}");
-
-                    }
-                }
-                else
-                {
-                    Helper.PrintConsole(ConsoleColor.Red, "Error: Teacher not found or has no groups!");
-                    goto TeacherName;
-                }
+                
+                
+                    Helper.PrintConsole(ConsoleColor.Green,
+                        $"Group Id: {groups.Id}, Name: {groups.Name}, Teacher: {groups.Teacher}, Room: {groups.Room}");
+                
             }
             else
             {
-                Helper.PrintConsole(ConsoleColor.Red, "Add correct teacher name!");
-                goto TeacherName;
+                Helper.PrintConsole(ConsoleColor.Red, "No groups found for this teacher!");
             }
         }
 
-
-
         public void GetByRoom()
         {
-        RoomName:
+      
             Helper.PrintConsole(ConsoleColor.Green, "Add Group Room:");
             string groupRoom = Console.ReadLine().Trim().ToUpper();
 
-            bool isGroupRoom = !string.IsNullOrWhiteSpace(groupRoom);
+            var groups = _groupService.GetByRoom(groupRoom);
 
-            if (isGroupRoom)
+            if (groups != null)
             {
-                List<Group> groups = (List<Group>)_groupService.GetAllByRoom(groupRoom);
-
-                if (groups != null && groups.Count > 0)
-                {
-                    Helper.PrintConsole(ConsoleColor.Yellow, $"Groups found in room: {groupRoom}\n");
-
-                    foreach (var group in groups)
-                    {
-                        Helper.PrintConsole(ConsoleColor.Cyan,
-                            $"Id: {group.Id}, GroupName: {group.Name}, GroupTeacher: {group.Teacher}, GroupRoom: {group.Room}");
-                    }
-                }
-                else
-                {
-                    Helper.PrintConsole(ConsoleColor.Red, "Error: No groups found in this room!");
-                    goto RoomName;
-                }
+                Helper.PrintConsole(ConsoleColor.Green, $"Group Id: {groups.Id}, Name: {groups.Name}, Teacher: {groups.Teacher}, Room: {groups.Room}");
             }
             else
             {
-                Helper.PrintConsole(ConsoleColor.Red, "Add correct room name!");
-                goto RoomName;
+                Helper.PrintConsole(ConsoleColor.Red, "No groups found for this room!");
             }
+
+        
         }
         public void Search()
         {
