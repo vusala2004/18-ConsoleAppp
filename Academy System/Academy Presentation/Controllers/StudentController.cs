@@ -28,25 +28,26 @@ namespace Academy_Presentation.Controllers
 
             if (isSelectedId)
             {
+            IfEmpty:
                 Helper.PrintConsole(ConsoleColor.Blue, "Add Student Name");
                 string studentName = Console.ReadLine();
 
                 Helper.PrintConsole(ConsoleColor.Blue, "Add Student Surname");
                 string studentSurname = Console.ReadLine();
 
-                Helper.PrintConsole(ConsoleColor.Blue, "Add Student Age");
+            AgeIn: Helper.PrintConsole(ConsoleColor.Blue, "Add Student Age");
                 string ageInput = Console.ReadLine();
 
                 if (!int.TryParse(ageInput, out int age))
                 {
                     Helper.PrintConsole(ConsoleColor.Red, "Please enter a valid age!");
-                    goto GroupId;
+                    goto AgeIn;
                 }
                 if (string.IsNullOrWhiteSpace(studentName) || string.IsNullOrWhiteSpace(studentSurname) || string.IsNullOrWhiteSpace(ageInput))
                 {
                     Helper.PrintConsole(ConsoleColor.Red, "Error: Empty field");
 
-                    goto GroupId;
+                    goto IfEmpty;
                 }
                 if (studentName.Length >= 30)
                 {

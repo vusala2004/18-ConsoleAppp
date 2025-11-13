@@ -13,7 +13,7 @@ namespace Academy_Presentation.Controllers
 
         public void Create()
         {
-
+        IfEmpty:
             Helper.PrintConsole(ConsoleColor.Green, "Add Group Name:");
             string groupName = Console.ReadLine().Trim().ToUpper();
 
@@ -27,21 +27,24 @@ namespace Academy_Presentation.Controllers
             if (string.IsNullOrWhiteSpace(groupName) || string.IsNullOrWhiteSpace(groupTeacher) || string.IsNullOrWhiteSpace(groupRoom))
             {
                 Helper.PrintConsole(ConsoleColor.Red, "Error: Empty field");
-                return;
+                goto IfEmpty;
             }
             if (groupName.Length > 50) 
             {
-                Helper.PrintConsole(ConsoleColor.Red, "Error: Group name too long."); return;
+                Helper.PrintConsole(ConsoleColor.Red, "Error: Group name too long.");
+                goto IfEmpty;
             }
 
             if (groupTeacher.Length > 30)
             {
-                Helper.PrintConsole(ConsoleColor.Red, "Error: groupTeacher limited"); return;
+                Helper.PrintConsole(ConsoleColor.Red, "Error: groupTeacher limited");
+                goto IfEmpty;
             }
             if (groupRoom.Length >20)
             { 
                 
-               Helper.PrintConsole(ConsoleColor.Red, "Error: groupRoom limited"); return; 
+               Helper.PrintConsole(ConsoleColor.Red, "Error: groupRoom limited"); 
+                goto IfEmpty;
             }
 
 
