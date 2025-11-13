@@ -1,9 +1,10 @@
 ﻿using Academy_Presentation.Helpers;
 using Domain.Entities;
+using Domain.Entities;
 using Service.Services.Implementations;
 using System;
-
-using Domain.Entities;
+using System.ComponentModel.Design;
+using System.Xml.Linq;
 namespace Academy_Presentation.Controllers
 {
     public class GroupController
@@ -12,11 +13,12 @@ namespace Academy_Presentation.Controllers
 
         public void Create()
         {
+
             Helper.PrintConsole(ConsoleColor.Green, "Add Group Name:");
             string groupName = Console.ReadLine().Trim().ToUpper();
 
             Helper.PrintConsole(ConsoleColor.Green, "Add Group Teacher:");
-            string groupTeacher = Console.ReadLine().Trim().ToUpper();
+            string groupTeacher = Console.ReadLine().Trim();
 
 
             Helper.PrintConsole(ConsoleColor.Green, "Add Group Room:");
@@ -24,9 +26,40 @@ namespace Academy_Presentation.Controllers
 
             if (string.IsNullOrWhiteSpace(groupName) || string.IsNullOrWhiteSpace(groupTeacher) || string.IsNullOrWhiteSpace(groupRoom))
             {
-                Helper.PrintConsole(ConsoleColor.Red, "Error: All fields must be filled!");
+                Helper.PrintConsole(ConsoleColor.Red, "Error: Empty field");
                 return;
             }
+            if (groupName.Length > 50) 
+            {
+                Helper.PrintConsole(ConsoleColor.Red, "Error: Group name too long."); return;
+            }
+
+            if (groupTeacher.Length > 30)
+            {
+                Helper.PrintConsole(ConsoleColor.Red, "Error: groupTeacher limited"); return;
+            }
+            if (groupRoom.Length >20)
+            { 
+                
+               Helper.PrintConsole(ConsoleColor.Red, "Error: groupRoom limited"); return; 
+            }
+
+
+
+            foreach (char c in groupTeacher)
+            {
+                if (!char.IsLetter(c) && c != ' ' && c != '-')
+                {
+                    Helper.PrintConsole(ConsoleColor.Red, "Error: Teacher name invalid (no numbers or special characters)");
+                    return;
+                }
+            }
+            groupName = char.ToUpper(groupName[0]) + groupName.Substring(1).ToLower();
+            groupTeacher = char.ToUpper(groupTeacher[0]) + groupTeacher.Substring(1).ToLower();
+
+           
+
+
 
             Group group = new Group { Name = groupName, Teacher = groupTeacher, Room = groupRoom };
 
@@ -39,8 +72,11 @@ namespace Academy_Presentation.Controllers
             else
             {
                 Helper.PrintConsole(ConsoleColor.Red, "Error: Could not add group");
+
+
             }
         }
+
  
         public void UpdateGroup()
         {
@@ -104,7 +140,7 @@ namespace Academy_Presentation.Controllers
                     }
                     else
                     {
-                        Helper.PrintConsole(ConsoleColor.Red, "Group not updated, please try again.");
+                        Helper.PrintConsole(ConsoleColor.Red, "Group not found.");
                         goto GroupId;
                     }
                 }
@@ -129,6 +165,17 @@ namespace Academy_Presentation.Controllers
                 int id;
 
                 bool isGroupId = int.TryParse(groupId, out id);
+                if (string.IsNullOrWhiteSpace(groupId))
+                {
+                    Helper.PrintConsole(ConsoleColor.Red, "Delete operation cancelled.");
+                    goto GroupId;
+                }
+                if (id <= 0)
+                {
+                    Helper.PrintConsole(ConsoleColor.Red, "Add correct positive Student Id");
+                    goto GroupId;
+
+                }
 
                 if (isGroupId)
                 {
@@ -147,7 +194,7 @@ namespace Academy_Presentation.Controllers
         GroupId: Helper.PrintConsole(ConsoleColor.Green, "Add Group Id:");
             string groupId = Console.ReadLine();
             int id;
-            bool isGroupId = int.TryParse(groupId, out id);
+            bool isGroupId = int.TryParse(groupId, out id) || id <= 0;
             if (isGroupId)
             {
                 Group group = _groupService.GetById(id);

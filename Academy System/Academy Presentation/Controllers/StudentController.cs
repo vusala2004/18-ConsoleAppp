@@ -42,7 +42,52 @@ namespace Academy_Presentation.Controllers
                     Helper.PrintConsole(ConsoleColor.Red, "Please enter a valid age!");
                     goto GroupId;
                 }
+                if (string.IsNullOrWhiteSpace(studentName) || string.IsNullOrWhiteSpace(studentSurname) || string.IsNullOrWhiteSpace(ageInput))
+                {
+                    Helper.PrintConsole(ConsoleColor.Red, "Error: Empty field");
 
+                    goto GroupId;
+                }
+                if (studentName.Length >= 30)
+                {
+                    Helper.PrintConsole(ConsoleColor.Red, "Error: Name limited"); return;
+                }
+                if (studentSurname.Length >=30)
+                {
+                    Helper.PrintConsole(ConsoleColor.Red, "Error: groupTeacher limited"); return;
+                }
+                if (age<=16)
+                {
+                    Helper.PrintConsole(ConsoleColor.Red, "Error: There are no students of this age.");return;
+                }
+                foreach (char c in studentName)
+                {
+                    if (!char.IsLetter(c) && c != ' ' && c != '-')
+                    {
+                        Helper.PrintConsole(ConsoleColor.Red, "Error: Teacher name invalid (no numbers or special characters)");
+                        return;
+                    }
+                }
+                foreach (char c in studentSurname)
+                {
+                    if (!char.IsLetter(c) && c != ' ' && c != '-')
+                    {
+                        Helper.PrintConsole(ConsoleColor.Red, "Error: Teacher name invalid (no numbers or special characters)");
+                        return;
+                    }
+                }
+                if (!studentSurname.All(c => (char.IsLetter(c) || c == ' ' || c == '-') && !char.IsDigit(c)))
+                {
+
+                    Helper.PrintConsole(ConsoleColor.Red, "Error: Name invalid"); return;
+                }
+                if (studentName.Equals(studentSurname, StringComparison.OrdinalIgnoreCase))
+                {
+                    Helper.PrintConsole(ConsoleColor.Red, "Error: Name and Surname cannot be the same.");
+                    return;
+                }
+                studentName = char.ToUpper(studentName[0]) + studentName.Substring(1).ToLower();
+                studentSurname = char.ToUpper(studentSurname[0]) + studentSurname.Substring(1).ToLower();
                 Student student = new Student
                 {
                     Name = studentName,
@@ -118,7 +163,7 @@ namespace Academy_Presentation.Controllers
                 // GroupId
                 Helper.PrintConsole(ConsoleColor.Blue, $"Current Group Id: {student.GroupId}. Add new Group Id (or press Enter to keep current):");
                 string newGroupIdInput = Console.ReadLine();
-                int newGroupId =(int) student.GroupId;
+                int newGroupId = (int)student.GroupId;
                 if (!string.IsNullOrWhiteSpace(newGroupIdInput) && int.TryParse(newGroupIdInput, out int parsedGroupId))
                 {
                     newGroupId = parsedGroupId;
@@ -143,7 +188,7 @@ namespace Academy_Presentation.Controllers
                 }
                 else
                 {
-                    Helper.PrintConsole(ConsoleColor.Red, "Student not updated, please try again.");
+                    Helper.PrintConsole(ConsoleColor.Red, "Student not found!");
                 }
             }
         }
@@ -151,7 +196,7 @@ namespace Academy_Presentation.Controllers
 
 
 
-        public void Delete() 
+        public void Delete()
         {
             {
             StudentId: Helper.PrintConsole(ConsoleColor.Green, "Add Group Id:");
@@ -160,6 +205,20 @@ namespace Academy_Presentation.Controllers
                 int id;
 
                 bool isStudentId = int.TryParse(studentId, out id);
+                if (string.IsNullOrWhiteSpace(studentId))
+                {
+                    Helper.PrintConsole(ConsoleColor.Red, "Delete operation cancelled.");
+                  goto StudentId;
+                }
+                
+                
+
+                if (id <= 0)
+                {
+                    Helper.PrintConsole(ConsoleColor.Red, "Add correct positive Student Id");
+                    goto StudentId;
+                   
+                }
 
                 if (isStudentId)
                 {
@@ -177,7 +236,7 @@ namespace Academy_Presentation.Controllers
         StudentId: Helper.PrintConsole(ConsoleColor.Green, "Add Group Id:");
             string studentId = Console.ReadLine();
             int id;
-            bool isStudentId = int.TryParse(studentId, out id);
+            bool isStudentId = int.TryParse(studentId, out id) || id <= 0;
             if (isStudentId)
             {
                 Student student = _studentService.GetById(id);
@@ -190,7 +249,9 @@ namespace Academy_Presentation.Controllers
                     Helper.PrintConsole(ConsoleColor.Red, "Error: Group not found!");
                     goto StudentId;
                 }
+                
             }
+            
             else
             {
                 Helper.PrintConsole(ConsoleColor.Red, "Add correct GroupId type!");
@@ -208,6 +269,11 @@ namespace Academy_Presentation.Controllers
                 if (!int.TryParse(ageInput, out int age))
                 {
                     Helper.PrintConsole(ConsoleColor.Red, "Please enter a valid number!");
+                    continue;
+                }
+                if (age <= 0)
+                {
+                    Helper.PrintConsole(ConsoleColor.Red, "Age must be a positive number!");
                     continue;
                 }
 
@@ -232,7 +298,7 @@ namespace Academy_Presentation.Controllers
 
         public void GetByGroupId()
         {
-          
+
             while (true)
             {
                 Helper.PrintConsole(ConsoleColor.Blue, "Add Group Id:");
@@ -260,19 +326,19 @@ namespace Academy_Presentation.Controllers
                         $"Student Id: {student.Id}, Name: {student.Name}, Surname: {student.Surname}, Age: {student.Age}, Group: {student.Group?.Name}");
                 }
 
-                break; 
+                break;
             }
         }
 
-        
-        public void Search() 
+
+        public void Search()
         {
             {
             SearchText: Helper.PrintConsole(ConsoleColor.Blue, "Add Group search text");
 
                 string searchName = Console.ReadLine();
                 List<Student> students = _studentService.Search(searchName);
-                if (students.Count != 0)
+                if (students==null ||students.Count != 0)
                 {
                     foreach (var student in students)
                     {
@@ -284,7 +350,7 @@ namespace Academy_Presentation.Controllers
                     Helper.PrintConsole(ConsoleColor.Red, "Groups not found for search text!");
                     goto SearchText;
                 }
-            } }
+            }
+        }
+    }
 }
-}
-

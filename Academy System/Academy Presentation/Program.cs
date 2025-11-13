@@ -35,23 +35,23 @@ namespace Academy_Presentation
                             groupController.Create();
                             break;
                         case (int)Menus.Updategroup:
-                                groupController.UpdateGroup();
+                            groupController.UpdateGroup();
                             break;
-                        case(int)Menus.DeleteGroup:
-                                groupController.Delete();
+                        case (int)Menus.DeleteGroup:
+                            groupController.Delete();
                             break;
-                            
+
                         case (int)Menus.Getgroupbyid:
                             groupController.GetById();
                             break;
                         case (int)Menus.Getallgroupsbyteacher:
                             groupController.GetByTeacher();
                             break;
-                            case (int)Menus.Getallgroupsbyroom:
+                        case (int)Menus.Getallgroupsbyroom:
                             groupController.GetByRoom();
                             break;
                         case (int)Menus.Getallgroups:
-                            groupController.GetAll();   
+                            groupController.GetAll();
                             break;
 
                         case (int)Menus.CreateStudent:
@@ -86,7 +86,7 @@ namespace Academy_Presentation
                             studentController.Search();
                             break;
 
-                        
+
 
                         default:
                             Helper.PrintConsole(ConsoleColor.Red, "unknown option, please try again!");
@@ -101,23 +101,24 @@ namespace Academy_Presentation
                 }
             }
         }
+
     }
 }
 
 
-                      
-                               
-                                
 
 
 
 
-                
-                
-            
-        
-    
 
-            
 
-        
+
+
+
+
+
+
+
+
+
+
